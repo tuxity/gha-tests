@@ -12,3 +12,4 @@ jobs:
         echo "Memory: " && free -h
         echo "VCPU: " && nproc
         echo "Disks: " && df -h
+        echo "Current path: " && pwd
