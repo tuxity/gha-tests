@@ -1,0 +1,14 @@
+name: Test runners
+
+on:
+  push:
+
+jobs:
+  capacity:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get Specs
+      run: |
+        echo "Memory: " && free -h
+        echo "VCPU: " && nproc
+        echo "Disks: " && df -h
