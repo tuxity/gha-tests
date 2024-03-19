@@ -7,6 +7,8 @@ jobs:
   openssl:
     runs-on: macos-14 # beta but m1 arm64 arch
     steps:
+    - name: Get env
+      run: env
     - name: Default OpenSSL version
       run: openssl version
     - name: OpenSSl installed version(s)
