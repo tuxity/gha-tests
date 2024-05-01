@@ -45,5 +45,7 @@ jobs:
           git fetch mattermost ${releaseBranch}
           git fetch mattermost ${tag}
 
+          git checkout -b ${releaseBranch} --track mattermost/${releaseBranch}
+
           git push origin ${releaseBranch} --force
           git push origin ${tag} --force
