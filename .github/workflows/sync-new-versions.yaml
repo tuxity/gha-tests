@@ -37,9 +37,12 @@ jobs:
         if: steps.compare_releases.outputs.new_tag != ''
         run: |
           tag="${{ steps.compare_releases.outputs.new_tag }}"
-          releaseBranch="release-${tag.substring(1).split('.').slice(0, 2).join('.')}"
+          version="${tag:1}"
+          major_minor="${version%.*}"
+          releaseBranch="release-$major_minor"
 
-          git fetch mattermost ${releaseBranch}
+          git remote add mattermost https://github.com/mattermost/mattermost.git
+          git fetch mattermost
           git checkout -b ${releaseBranch} --track mattermost/${releaseBranch}
 
           git tag ${tag}
