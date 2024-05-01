@@ -42,9 +42,8 @@ jobs:
           releaseBranch="release-$major_minor"
 
           git remote add mattermost https://github.com/mattermost/mattermost.git
-          git fetch mattermost
-          git checkout -b ${releaseBranch} --track mattermost/${releaseBranch}
+          git fetch mattermost ${releaseBranch}
+          git fetch mattermost ${tag}
 
-          git tag ${tag}
           git push origin ${releaseBranch} --force
-          git push origin ${tag}
+          git push origin ${tag} --force
