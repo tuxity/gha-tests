@@ -16,17 +16,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           script: |
-            const upstream = await github.rest.repos.getLatestRelease({
-              owner: 'mattermost',
-              repo: 'mattermost'
+            const upstream = await octokit.rest.repos.getLatestRelease({
+                'mattermost',
+                'mattermost'
             });
-            const fork = await github.rest.repos.getLatestRelease({
-              owner: '${{ github.repository_owner }}',
-              repo: '${{ github.event.repository.name }}'
+            const fork = await octokit.rest.repos.getLatestRelease({
+                '${{ github.repository_owner }}',
+                '${{ github.event.repository.name }}'
             });
 
             if (upstream.data.tag_name !== fork.data.tag_name) {
-              echo "new_tag=upstream.data.tag_name" >> $GITHUB_OUTPUT
+                echo "new_tag=upstream.data.tag_name" >> $GITHUB_OUTPUT
             }
 
       - name: Checkout
