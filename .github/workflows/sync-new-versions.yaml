@@ -1,0 +1,47 @@
+name: Sync Upstream Releases
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get and compare releases
+        id: compare_releases
+        uses: actions/github-script@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          script: |
+            const upstream = await github.rest.repos.getLatestRelease({
+              owner: 'mattermost',
+              repo: 'mattermost'
+            });
+            const fork = await github.rest.repos.getLatestRelease({
+              owner: '${{ github.repository_owner }}',
+              repo: '${{ github.event.repository.name }}'
+            });
+
+            if (upstream.data.tag_name !== fork.data.tag_name) {
+              echo "new_tag=upstream.data.tag_name" >> $GITHUB_OUTPUT
+            }
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        if: steps.compare_releases.outputs.new_tag != ''
+
+      - name: Sync
+        if: steps.compare_releases.outputs.new_tag != ''
+        run: |
+          tag="${{ steps.compare_releases.outputs.new_tag }}"
+          releaseBranch="release-${tag.substring(1).split('.').slice(0, 2).join('.')}"
+
+          git fetch mattermost ${releaseBranch}
+          git checkout -b ${releaseBranch} --track mattermost/${releaseBranch}
+
+          git tag ${tag}
+          git push origin ${releaseBranch} --force
+          git push origin ${tag}
