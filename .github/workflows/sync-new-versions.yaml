@@ -26,7 +26,7 @@ jobs:
             core.info(`Fork release: ${fork.data.tag_name}`);
 
             if (upstream.data.tag_name !== fork.data.tag_name) {
-              echo "new_tag=upstream.data.tag_name" >> $GITHUB_OUTPUT
+              core.setOutput('new_tag', upstream.data.tag_name);
             }
 
       - name: Checkout
