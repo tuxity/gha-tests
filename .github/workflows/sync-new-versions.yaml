@@ -32,6 +32,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         if: steps.compare_releases.outputs.new_tag != ''
+        with:
+          token: ${{ secrets.PAT }}
 
       - name: Sync
         if: steps.compare_releases.outputs.new_tag != ''
