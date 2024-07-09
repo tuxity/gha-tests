@@ -1,0 +1,29 @@
+name: Build Matrix Example
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build (${{ matrix.node-version.runner }}/${{ strategy.job-total }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Debug name values
+      run: |
+        echo "matrix: ${{ matrix.node-version.runner }}, strategy: ${{ strategy.job-total }}"
+
+  deploy:
+    name: Deploy (${{ matrix.node-version.runner || '0' }}/${{ strategy.job-total }})
+    if: false
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Debug name values
+      run: |
+        echo "matrix: ${{ matrix.node-version.runner }}, strategy: ${{ strategy.job-total }}"
