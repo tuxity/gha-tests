@@ -16,7 +16,7 @@ jobs:
         echo "matrix: ${{ matrix.node-version.runner }}, strategy: ${{ strategy.job-total }}"
 
   deploy:
-    name: Deploy (${{ matrix.node-version.runner || '0' }}/${{ strategy.job-total }})
+    name: Deploy (${{format('{0}/{1}', matrix.node-version.runner || '0', strategy.job-total || '0')}})
     if: false
     runs-on: ubuntu-latest
     strategy:
